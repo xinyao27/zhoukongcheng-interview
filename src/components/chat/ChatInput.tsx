@@ -13,14 +13,15 @@ interface ChatInputProps {
       | React.ChangeEvent<HTMLInputElement>
       | React.ChangeEvent<HTMLTextAreaElement>
   ) => void;
+  status: string;
 }
 
 export function ChatInput({
   onSubmit,
   onStop,
-  isLoading,
   input,
   handleInputChange,
+  status,
 }: ChatInputProps) {
   // const [input, setInput] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -55,9 +56,9 @@ export function ChatInput({
         onKeyDown={handleKeyDown}
         placeholder="输入消息..."
         className="min-h-[60px] max-h-[200px] resize-none"
-        disabled={isLoading}
+        disabled={status === "submitted" || status === "streaming"}
       />
-      {isLoading ? (
+      {status === "submitted" || status === "streaming" ? (
         <Button
           variant="destructive"
           size="icon"

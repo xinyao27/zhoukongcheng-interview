@@ -5,7 +5,7 @@ import { ChatMessage } from "./ChatMessage";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 export function ChatContainer() {
-  const { messages, handleSubmit, isLoading, stop, input, handleInputChange } =
+  const { messages, handleSubmit, status, stop, input, handleInputChange } =
     useChat({
       api: "/api/chat",
     });
@@ -28,7 +28,7 @@ export function ChatContainer() {
               role={message.role}
               content={message.content}
               isLoading={
-                isLoading &&
+                (status === "submitted" || status === "streaming") &&
                 message.role === "assistant" &&
                 messages[messages.length - 1].id === message.id
               }
@@ -44,9 +44,9 @@ export function ChatContainer() {
             })
           }
           onStop={stop}
-          isLoading={isLoading}
           input={input}
           handleInputChange={handleInputChange}
+          status={status}
         />
       </div>
     </div>
